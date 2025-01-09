@@ -8,7 +8,9 @@ use App\Repository\BookReadRepository;
 use App\Repository\BookRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Error;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -46,12 +48,7 @@ class HomeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$user) {
-                return $this->render('pages/home.html.twig', [
-                    'form' => $form,
-                    'booksReads' => $booksReads,
-                    'books' => $books,
-                    'name' => 'Accueil',
-                ]);
+                throw new Error("Connectez-vous avant de mettre un avis");
             }
 
             $bookRead->setRead($form->get('is_read')->getData());
@@ -60,6 +57,17 @@ class HomeController extends AbstractController
 
             $entityManager->persist($bookRead);
             $entityManager->flush();
+
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse(['message' => "L'avis a bien été pris en compte"]);
+            }
+
+            return $this->render('pages/home.html.twig', [
+                'form' => $form,
+                'booksReads' => $booksReads,
+                'books' => $books,
+                'name' => 'Accueil',
+            ]);
         }
 
         return $this->render('pages/home.html.twig', [

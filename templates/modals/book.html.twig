@@ -34,9 +34,42 @@
 					<div class="flex">
 						<button type="submit" class="btn btn-primary">Enregistrer</button>
 					</div>
+
+					<div id="form-messages" />
 				</div>
 				{{ form_end(form) }}
 			</div>
 		</div>
 	</div>
 </div>
+
+<script>
+document.getElementById('book-read-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest', // tells it is AJAX request
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error('Ajout échoué');
+    })
+    .then(data => {
+        const messageDiv = document.getElementById('form-messages');
+        messageDiv.textContent = data.message;
+    })
+    .catch(error => {
+        const messageDiv = document.getElementById('form-messages');
+        messageDiv.textContent = error.message;
+    });
+});
+</script>

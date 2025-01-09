@@ -70,7 +70,8 @@ class BookReadType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => BookRead::class,
-            'books' => []
+            'books' => [],
+            'attr' => ['id' => "book-read-form"]
         ]);
     }
 }
