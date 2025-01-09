@@ -32,10 +32,10 @@ class BookRead
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $cover = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: ["default" => "CURRENT_TIMESTAMP"])]
     private ?\DateTime $created_at = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: ["default" => "CURRENT_TIMESTAMP"])]
     private ?\DateTime $updated_at = null;
 
     public function getId(): ?int
