@@ -34,8 +34,7 @@ class HomeController extends AbstractController
     {
         // get connected user
         $user = $this->getUser();
-        $userId = $user ? $user->getId() : -1;
-        $booksReads = $this->bookReadRepository->findByUserId($userId, false);
+        $booksReads = $user ? $this->bookReadRepository->findByUser($user, false) : [];
 
         // get all books
         $books = $this->bookRepository->findAll();
@@ -53,7 +52,7 @@ class HomeController extends AbstractController
 
             $bookRead->setRead($form->get('is_read')->getData());
             $bookRead->setUpdatedAt(new DateTime()); // update updated_at
-            $bookRead->setUserId($userId); // update user
+            $bookRead->setUser($user); // update user
 
             $entityManager->persist($bookRead);
             $entityManager->flush();
