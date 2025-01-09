@@ -46,6 +46,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->bookReads = new ArrayCollection();
     }
 
+    public function toArray(): array
+    {
+        $data = [
+            'id' => $this->getId(),
+            'email' => $this->getEmail(),
+            'roles' => $this->getRoles(),
+        ];
+
+        return $data;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

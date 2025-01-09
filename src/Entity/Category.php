@@ -33,13 +33,27 @@ class Category
      */
     #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'category')]
     private Collection $books;
-    
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
         $this->updated_at = new \DateTime();
         $this->books = new ArrayCollection();
     }
+
+    public function toArray(): array
+    {
+        $data = [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'created_at' => $this->getCreatedAt()?->format('Y-m-d H:i:s'),
+            'updated_at' => $this->getUpdatedAt()?->format('Y-m-d H:i:s'),
+        ];
+
+        return $data;
+    }
+
 
     public function getId(): ?int
     {

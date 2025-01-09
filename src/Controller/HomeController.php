@@ -34,7 +34,9 @@ class HomeController extends AbstractController
     {
         // get connected user
         $user = $this->getUser();
-        $booksReads = $user ? $this->bookReadRepository->findByUser($user, false) : [];
+
+        $unreadBooksReads = $user ? $this->bookReadRepository->findByUser($user, false) : [];
+        $readBooksReads = $user ? $this->bookReadRepository->findByUser($user, true) : [];
 
         // get all books
         $books = $this->bookRepository->findAll();
@@ -63,17 +65,17 @@ class HomeController extends AbstractController
 
             return $this->render('pages/home.html.twig', [
                 'form' => $form,
-                'booksReads' => $booksReads,
-                'books' => $books,
-                'name' => 'Accueil',
+                'unreadBooksReads' => $unreadBooksReads,
+                'readBooksReads' => $readBooksReads,
+                'books' => $books
             ]);
         }
 
         return $this->render('pages/home.html.twig', [
             'form' => $form,
-            'booksReads' => $booksReads,
-            'books' => $books,
-            'name' => 'Accueil',
+            'unreadBooksReads' => $unreadBooksReads,
+            'readBooksReads' => $readBooksReads,
+            'books' => $books
         ]);
     }
 }

@@ -24,15 +24,15 @@ class BookReadType extends AbstractType
             ])
             ->add('rating', ChoiceType::class, [
                 'choices' => [
-                    '1' => 1,
-                    '1.5' => 1.5,
-                    '2' => 2,
-                    '2.5' => 2.5,
-                    '3' => 3,
-                    '3.5' => 3.5,
-                    '4' => 4,
-                    '4.5' => 4.5,
-                    '5' => 5
+                    '1' => "1.00",
+                    '1.5' => "1.50",
+                    '2' => "2.00",
+                    '2.5' => "2.50",
+                    '3' => "3.00",
+                    '3.5' => "3.50",
+                    '4' => "4.00",
+                    '4.5' => "4.50",
+                    '5' => "5.00"
                 ],
                 'attr' => [
                     "id" => "rating",
@@ -50,7 +50,7 @@ class BookReadType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'attr' => [
-                    'value' => 0
+                    'id' => 'is_read'
                 ]
             ])
         ;

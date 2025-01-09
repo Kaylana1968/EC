@@ -42,13 +42,30 @@ class Book
 
     #[ORM\ManyToOne(inversedBy: 'books')]
     private ?Category $category = null;
-    
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
         $this->updated_at = new \DateTime();
         $this->bookReads = new ArrayCollection();
     }
+
+    public function toArray(): array
+    {
+        $data = [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'pages' => $this->getPages(),
+            'publication_date' => $this->getPublicationDate()?->format('Y-m-d'),
+            'created_at' => $this->getCreatedAt()?->format('Y-m-d H:i:s'),
+            'updated_at' => $this->getUpdatedAt()?->format('Y-m-d H:i:s'),
+            'category' => $this->getCategory()->toArray(),
+        ];
+
+        return $data;
+    }
+
 
     public function getId(): ?int
     {
@@ -75,18 +92,6 @@ class Book
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getCategoryId(): ?string
-    {
-        return $this->category_id;
-    }
-
-    public function setCategoryId(string $category_id): static
-    {
-        $this->category_id = $category_id;
 
         return $this;
     }
