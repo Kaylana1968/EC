@@ -52,11 +52,28 @@ class HomeController extends AbstractController
                 throw new Error("Connectez-vous avant de mettre un avis");
             }
 
-            $bookRead->setRead($form->get('is_read')->getData());
-            $bookRead->setUpdatedAt(new DateTime()); // update updated_at
-            $bookRead->setUser($user); // update user
+            // Check if a bookRead already exists
+            $selectedBook = $form->get('book')->getData();
+            $existingBookRead = $this->bookReadRepository->findOneBy([
+                'user' => $user,
+                'book' => $selectedBook,
+            ]);
 
-            $entityManager->persist($bookRead);
+            if ($existingBookRead) {
+                // Update existing bookRead
+                $existingBookRead->setRead($form->get('is_read')->getData());
+                $existingBookRead->setRating($form->get('rating')->getData());
+                $existingBookRead->setDescription($form->get('description')->getData());
+                $existingBookRead->setUpdatedAt(new DateTime());
+            } else {
+                // Create new bookRead
+                $bookRead->setUser($user);
+                $bookRead->setRead($form->get('is_read')->getData());
+                $bookRead->setUpdatedAt(new DateTime());
+
+                $entityManager->persist($bookRead);
+            }
+
             $entityManager->flush();
 
             if ($request->isXmlHttpRequest()) {
