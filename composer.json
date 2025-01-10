@@ -60,7 +60,7 @@
         "symfony/polyfill-php82": "*"
     },
     "scripts": {
-        "start": "symfony server:start",
+        "start": "symfony server:start -d",
         "stop": "symfony server:stop",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",

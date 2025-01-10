@@ -65,7 +65,7 @@ class BookRead
             'id' => $this->getId(),
             'rating' => $this->getRating(),
             'description' => $this->getDescription(),
-            'is_read' => $this->isRead(),
+            'is_read' => $this->getIsRead(),
             'cover' => $this->getCover(),
             'created_at' => $this->getCreatedAt()?->format('Y-m-d H:i:s'),
             'updated_at' => $this->getUpdatedAt()?->format('Y-m-d H:i:s'),
@@ -105,12 +105,12 @@ class BookRead
         return $this;
     }
 
-    public function isRead(): ?bool
+    public function getIsRead(): ?bool
     {
         return $this->is_read;
     }
 
-    public function setRead(bool $is_read): static
+    public function setIsRead(bool $is_read): static
     {
         $this->is_read = $is_read;
 

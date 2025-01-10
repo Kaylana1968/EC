@@ -45,7 +45,6 @@ class BookReadType extends AbstractType
             ])
             ->add('is_read', CheckboxType::class, [
                 'required' => false,
-                'mapped' => false,
                 'attr' => [
                     'id' => 'is_read'
                 ]
