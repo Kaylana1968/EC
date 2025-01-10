@@ -1,7 +1,14 @@
+{% extends 'modalless-base.html.twig' %}
+
+{% block title %}
+	Child Page Title Explorer
+{% endblock %}
+
+{% block body %}
 <div class="card card-grid h-full min-w-full">
 	<div class="card-header">
 		<h3 class="card-title">
-			Mes lectures terminées
+			Explorez les lectures
 		</h3>
 		<div class="input input-sm max-w-48">
 			<i class="ki-filled ki-magnifier"></i>
@@ -20,9 +27,9 @@
 									<span class="sort-icon"></span>
 								</span>
 							</th>
-							<th class="min-w-[135px]">
+							<th>
 								<span class="sort asc">
-									<span class="sort-label">Catégorie</span>
+									<span class="sort-label">Utilisateur</span>
 									<span class="sort-icon"></span>
 								</span>
 							</th>
@@ -32,23 +39,36 @@
 									<span class="sort-icon"></span>
 								</span>
 							</th>
+							<th class="min-w-[280px]">
+								<span class="sort asc">
+									<span class="sort-label">Commentaire</span>
+									<span class="sort-icon"></span>
+								</span>
+							</th>
+							<th class="min-w-[180px]">
+								<span class="sort asc">
+									<span class="sort-label">Modifié le</span>
+									<span class="sort-icon"></span>
+								</span>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
-						{% for bookRead in readBookReads %}
+						{% for bookRead in bookReads %}
 							<tr>
-								{# id is set on first td because I couldn't manage to put on tr idk why #}
-								<td id="bookread-{{bookRead.id}}">
+								<td>
+									{{ bookRead.user.email }}
+								</td>
+								<td>
 									<div class="flex flex-col gap-2">
-										<button class="leading-none font-medium text-start text-sm text-gray-900 hover:text-primary" data-modal-toggle="#book_modal" onclick="setFormFields({{bookRead.toArray()|json_encode}})">
-											{{ bookRead.book.name }}
-										</button>
+										<span class="leading-none font-medium text-start text-sm text-gray-900">
+											{{bookRead.book.name}}
+										</span>
 										<span class="text-2sm text-gray-700 font-normal leading-3">
-											{{ bookRead.book.description }}
+											{{bookRead.book.description}}
 										</span>
 									</div>
 								</td>
-								<td>{{bookRead.book.category.name}}</td>
 								<td>
 									<div class="rating">
 										{% for rating in [1, 2, 3, 4, 5] %}
@@ -58,6 +78,10 @@
 											</div>
 										{% endfor %}
 									</div>
+								</td>
+								<td>{{bookRead.description}}</td>
+								<td class="text-end">
+									{{ bookRead.updatedAt|date('d/m/Y à H:i') }}
 								</td>
 							</tr>
 						{% endfor %}
@@ -78,3 +102,5 @@
 		</div>
 	</div>
 </div>
+
+{% endblock %}

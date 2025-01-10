@@ -18,7 +18,7 @@ class BookReadRepository extends ServiceEntityRepository
     }
 
     /**
-     * Method to find all ReadBook entities by user_id
+     * Method to find all ReadBook entities by user
      * @param User $user
      * @param bool $readState
      * @return array
@@ -30,6 +30,18 @@ class BookReadRepository extends ServiceEntityRepository
             ->andWhere('r.is_read = :isRead')
             ->setParameter('user', $user)
             ->setParameter('isRead', $readState)
+            ->orderBy('r.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Method to find all ReadBook entities
+     * @return array
+     */
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('r')
             ->orderBy('r.created_at', 'DESC')
             ->getQuery()
             ->getResult();
