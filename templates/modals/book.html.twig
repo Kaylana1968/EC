@@ -68,7 +68,7 @@ const data = categories.map(category => {
 
 const options = {
   chart: {
-    height: 400,
+    height: 500,
     type: 'radar'
   },
   yaxis: {
@@ -82,7 +82,17 @@ const options = {
   series: [{
     name: "",
     data
-  }]
+  }],
+	fill: {
+		colors: ["#00ff00"]
+	},
+	stroke: {
+		colors: ["#00ff00"]
+	},
+	markers: {
+		strokeColors: ["#00ff00"],
+		colors: ["#00ff00"]
+	}
 };
 
 const chart = new ApexCharts(document.getElementById("radarChart"), options);
