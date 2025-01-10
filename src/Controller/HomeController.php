@@ -6,6 +6,7 @@ use App\Entity\BookRead;
 use App\Form\BookReadType;
 use App\Repository\BookReadRepository;
 use App\Repository\BookRepository;
+use App\Repository\CategoryRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Error;
@@ -19,14 +20,17 @@ class HomeController extends AbstractController
 {
     private BookReadRepository $bookReadRepository;
     private BookRepository $bookRepository;
+    private CategoryRepository $categoryRepository;
 
     // Inject the repository via the constructor
     public function __construct(
         BookReadRepository $bookReadRepository,
-        BookRepository $bookRepository
+        BookRepository $bookRepository,
+        CategoryRepository $categoryRepository
     ) {
         $this->bookReadRepository = $bookReadRepository;
         $this->bookRepository = $bookRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     #[Route('/', name: 'app.home')]
@@ -35,11 +39,14 @@ class HomeController extends AbstractController
         // get connected user
         $user = $this->getUser();
 
-        $unreadBooksReads = $user ? $this->bookReadRepository->findByUser($user, false) : [];
-        $readBooksReads = $user ? $this->bookReadRepository->findByUser($user, true) : [];
+        $unreadBookReads = $user ? $this->bookReadRepository->findByUser($user, false) : [];
+        $readBookReads = $user ? $this->bookReadRepository->findByUser($user, true) : [];
 
         // get all books
         $books = $this->bookRepository->findAll();
+
+        // get all categories
+        $categories = $this->categoryRepository->findAll();
 
         $bookRead = new BookRead();
         $form = $this->createForm(BookReadType::class, $bookRead, [
@@ -88,9 +95,10 @@ class HomeController extends AbstractController
 
         return $this->render('pages/home.html.twig', [
             'form' => $form,
-            'unreadBooksReads' => $unreadBooksReads,
-            'readBooksReads' => $readBooksReads,
-            'books' => $books
+            'unreadBookReads' => $unreadBookReads,
+            'readBookReads' => $readBookReads,
+            'books' => $books,
+            'categories' => $categories
         ]);
     }
 }

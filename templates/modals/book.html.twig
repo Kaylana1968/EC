@@ -78,7 +78,7 @@ document.getElementById('book-read-form').addEventListener('submit', function (e
 				const row = document.createElement("tr");
 
 				if (toAdd.is_read) {
-					const readBooksReadsTable = document.querySelector("#read-books-table tbody");
+					const readBookReadsTable = document.querySelector("#read-books-table tbody");
 
 					row.innerHTML = `
 						<td id="bookread-${toAdd.id}">
@@ -115,9 +115,9 @@ document.getElementById('book-read-form').addEventListener('submit', function (e
 						</td>
 					`;
 
-					readBooksReadsTable.appendChild(row);
+					readBooksReadTable.appendChild(row);
 				} else {
-					const unreadBooksReadsTable = document.querySelector("#current-books-table tbody");
+					const unreadBooksReadTable = document.querySelector("#current-books-table tbody");
 
 					const updatedAt = new Date(toAdd.updated_at);
 					const formatedUpdatedAd = `${
@@ -147,7 +147,7 @@ document.getElementById('book-read-form').addEventListener('submit', function (e
 						</td>
 					`;
 
-					unreadBooksReadsTable.appendChild(row);
+					unreadBooksReadTable.appendChild(row);
 				}
 			}
     })
