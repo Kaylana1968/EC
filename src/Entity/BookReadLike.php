@@ -2,29 +2,26 @@
 
 namespace App\Entity;
 
-use App\Repository\FeedbackRepository;
+use App\Repository\BookReadLikeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: FeedbackRepository::class)]
-class Feedback
+#[ORM\Entity(repositoryClass: BookReadLikeRepository::class)]
+class BookReadLike
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'feedback')]
+    #[ORM\ManyToOne(inversedBy: 'bookReadLikes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?BookRead $bookRead = null;
+    private ?BookRead $book_read = null;
 
-    #[ORM\ManyToOne(inversedBy: 'feedback')]
+    #[ORM\ManyToOne(inversedBy: 'bookReadLikes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(length: 2047, nullable: true)]
-    private ?string $comment = null;
-
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column]
     private ?bool $is_liked = null;
 
     public function getId(): ?int
@@ -34,12 +31,12 @@ class Feedback
 
     public function getBookRead(): ?BookRead
     {
-        return $this->bookRead;
+        return $this->book_read;
     }
 
     public function setBookRead(?BookRead $bookRead): static
     {
-        $this->bookRead = $bookRead;
+        $this->book_read = $bookRead;
 
         return $this;
     }
@@ -56,24 +53,12 @@ class Feedback
         return $this;
     }
 
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    public function setComment(?string $comment): static
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    public function isLiked(): ?bool
+    public function getIsLiked(): ?bool
     {
         return $this->is_liked;
     }
 
-    public function setLiked(?bool $is_liked): static
+    public function setIsLiked(bool $is_liked): static
     {
         $this->is_liked = $is_liked;
 

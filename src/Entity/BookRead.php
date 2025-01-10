@@ -47,16 +47,24 @@ class BookRead
     private ?User $user = null;
 
     /**
-     * @var Collection<int, Feedback>
+     * @var Collection<int, BookReadLike>
      */
-    #[ORM\OneToMany(targetEntity: Feedback::class, mappedBy: 'bookRead')]
-    private Collection $feedback;
+    #[ORM\OneToMany(targetEntity: BookReadLike::class, mappedBy: 'bookRead')]
+    private Collection $bookReadLikes;
+
+    /**
+     * @var Collection<int, BookReadComment>
+     */
+    #[ORM\OneToMany(targetEntity: BookReadComment::class, mappedBy: 'book_read')]
+    private Collection $bookReadComments;
+
 
     public function __construct()
     {
         $this->created_at = new \DateTime();
         $this->updated_at = new \DateTime();
-        $this->feedback = new ArrayCollection();
+        $this->bookReadLikes = new ArrayCollection();
+        $this->bookReadComments = new ArrayCollection();
     }
 
     public function toArray(): array
@@ -178,29 +186,59 @@ class BookRead
     }
 
     /**
-     * @return Collection<int, Feedback>
+     * @return Collection<int, BookReadLike>
      */
-    public function getFeedback(): Collection
+    public function getBookReadLikes(): Collection
     {
-        return $this->feedback;
+        return $this->bookReadLikes;
     }
 
-    public function addFeedback(Feedback $feedback): static
+    public function addBookReadLike(BookReadLike $bookReadLike): static
     {
-        if (!$this->feedback->contains($feedback)) {
-            $this->feedback->add($feedback);
-            $feedback->setBookRead($this);
+        if (!$this->bookReadLikes->contains($bookReadLike)) {
+            $this->bookReadLikes->add($bookReadLike);
+            $bookReadLike->setBookRead($this);
         }
 
         return $this;
     }
 
-    public function removeFeedback(Feedback $feedback): static
+    public function removeBookReadLike(BookReadLike $bookReadLike): static
     {
-        if ($this->feedback->removeElement($feedback)) {
+        if ($this->bookReadLikes->removeElement($bookReadLike)) {
             // set the owning side to null (unless already changed)
-            if ($feedback->getBookRead() === $this) {
-                $feedback->setBookRead(null);
+            if ($bookReadLike->getBookRead() === $this) {
+                $bookReadLike->setBookRead(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BookReadComment>
+     */
+    public function getBookReadComments(): Collection
+    {
+        return $this->bookReadComments;
+    }
+
+    public function addBookReadComment(BookReadComment $bookReadComment): static
+    {
+        if (!$this->bookReadComments->contains($bookReadComment)) {
+            $this->bookReadComments->add($bookReadComment);
+            $bookReadComment->setBookRead($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookReadComment(BookReadComment $bookReadComment): static
+    {
+        if ($this->bookReadComments->removeElement($bookReadComment)) {
+            // set the owning side to null (unless already changed)
+            if ($bookReadComment->getBookRead() === $this) {
+                $bookReadComment->setBookRead(null);
             }
         }
 

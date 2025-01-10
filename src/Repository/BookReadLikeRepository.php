@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\Feedback;
+use App\Entity\BookReadLike;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Feedback>
+ * @extends ServiceEntityRepository<BookReadLike>
  */
-class FeedbackRepository extends ServiceEntityRepository
+class BookReadLikeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Feedback::class);
+        parent::__construct($registry, BookReadLike::class);
     }
 
 //    /**
-//     * @return Feedback[] Returns an array of Feedback objects
+//     * @return BookReadLike[] Returns an array of BookReadLike objects
 //     */
 //    public function findByExampleField($value): array
 //    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
+//        return $this->createQueryBuilder('b')
+//            ->andWhere('b.exampleField = :val')
 //            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
+//            ->orderBy('b.id', 'ASC')
 //            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Feedback
+//    public function findOneBySomeField($value): ?BookReadLike
 //    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
+//        return $this->createQueryBuilder('b')
+//            ->andWhere('b.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->getQuery()
 //            ->getOneOrNullResult()
