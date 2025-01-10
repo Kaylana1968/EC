@@ -31,7 +31,8 @@
 					<tbody>
 						{% for bookRead in unreadBooksReads %}
 							<tr>
-								<td>
+								{# id is set on first td because I couldn't manage to put on tr idk why #}
+								<td id="bookread-{{bookRead.id}}">
 									<div class="flex flex-col gap-2">
 										<button class="leading-none font-medium text-start text-sm text-gray-900 hover:text-primary" data-modal-toggle="#book_modal" onclick="setFormFields({{bookRead.toArray()|json_encode}})">
 											{{bookRead.book.name}}

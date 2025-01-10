@@ -64,8 +64,92 @@ document.getElementById('book-read-form').addEventListener('submit', function (e
         throw new Error('Ajout échoué');
     })
     .then(data => {
-        const messageDiv = document.getElementById('form-messages');
-        messageDiv.textContent = data.message;
+			const { toDelete, toAdd, message } = data;
+
+      const messageDiv = document.getElementById('form-messages');
+      messageDiv.textContent = message;
+
+			if (toDelete) {
+				const toDeleteElement = document.getElementById(`bookread-${toDelete.id}`);
+				toDeleteElement.parentElement.remove();
+			}
+
+			if (toAdd) {
+				const row = document.createElement("tr");
+
+				if (toAdd.is_read) {
+					const readBooksReadsTable = document.querySelector("#read-books-table tbody");
+
+					row.innerHTML = `
+						<td id="bookread-${toAdd.id}">
+							<div class="flex flex-col gap-2">
+								<button class="leading-none font-medium text-start text-sm text-gray-900 hover:text-primary" data-modal-toggle="#book_modal" onclick="setFormFields(${toAdd})">
+									${toAdd.book.name}
+								</button>
+								<span class="text-2sm text-gray-700 font-normal leading-3">
+									${toAdd.book.description}
+								</span>
+							</div>
+						</td>
+						<td>${toAdd.book.category.name}</td>
+						<td>
+							<div class="rating">
+								${[1, 2, 3, 4, 5]
+									.map(rating => {
+										return rating <= toAdd.rating
+										? `
+											<div class="rating-label checked">
+												<i class="rating-on ki-solid ki-star text-base leading-none"></i>
+												<i class="rating-off ki-outline ki-star text-base leading-none"></i>
+											</div>
+										`
+										: `
+											<div class="rating-label">
+												<i class="rating-on ki-solid ki-star text-base leading-none"></i>
+												<i class="rating-off ki-outline ki-star text-base leading-none"></i>
+											</div>
+										`;
+									})
+									.join('')}
+							</div>
+						</td>
+					`;
+
+					readBooksReadsTable.appendChild(row);
+				} else {
+					const unreadBooksReadsTable = document.querySelector("#current-books-table tbody");
+
+					const updatedAt = new Date(toAdd.updated_at);
+					const formatedUpdatedAd = `${
+						String(updatedAt.getDate()).padStart(2, '0')
+					}/${
+						String(updatedAt.getMonth() + 1).padStart(2, '0')
+					}/${
+						updatedAt.getFullYear()
+					} à ${
+						String(updatedAt.getHours()).padStart(2, '0')
+					}:${
+						String(updatedAt.getMinutes()).padStart(2, '0')
+					}`
+					row.innerHTML = `
+						<td id="bookread-${toAdd.id}">
+							<div class="flex flex-col gap-2">
+								<button class="leading-none font-medium text-start text-sm text-gray-900 hover:text-primary" data-modal-toggle="#book_modal" onclick="setFormFields(${toAdd})">
+									${toAdd.book.name}
+								</button>
+								<span class="text-2sm text-gray-700 font-normal leading-3">
+									${toAdd.book.description}
+								</span>
+							</div>
+						</td>
+						<td class="text-end">
+							${formatedUpdatedAd}
+						</td>
+					`;
+
+					unreadBooksReadsTable.appendChild(row);
+				}
+			}
     })
     .catch(error => {
         const messageDiv = document.getElementById('form-messages');

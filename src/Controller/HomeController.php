@@ -52,6 +52,8 @@ class HomeController extends AbstractController
                 throw new Error("Connectez-vous avant de mettre un avis");
             }
 
+            $response = ['message' => "L'avis a bien été pris en compte"];
+
             // Check if a bookRead already exists
             $selectedBook = $form->get('book')->getData();
             $existingBookRead = $this->bookReadRepository->findOneBy([
@@ -60,11 +62,15 @@ class HomeController extends AbstractController
             ]);
 
             if ($existingBookRead) {
+                $response['toDelete'] = $existingBookRead->toArray();
+
                 // Update existing bookRead
                 $existingBookRead->setRead($form->get('is_read')->getData());
                 $existingBookRead->setRating($form->get('rating')->getData());
                 $existingBookRead->setDescription($form->get('description')->getData());
                 $existingBookRead->setUpdatedAt(new DateTime());
+
+                $response['toAdd'] = $existingBookRead->toArray();
             } else {
                 // Create new bookRead
                 $bookRead->setUser($user);
@@ -72,20 +78,12 @@ class HomeController extends AbstractController
                 $bookRead->setUpdatedAt(new DateTime());
 
                 $entityManager->persist($bookRead);
+                $response['toAdd'] = $bookRead->toArray();
             }
 
             $entityManager->flush();
 
-            if ($request->isXmlHttpRequest()) {
-                return new JsonResponse(['message' => "L'avis a bien été pris en compte"]);
-            }
-
-            return $this->render('pages/home.html.twig', [
-                'form' => $form,
-                'unreadBooksReads' => $unreadBooksReads,
-                'readBooksReads' => $readBooksReads,
-                'books' => $books
-            ]);
+            return new JsonResponse($response);
         }
 
         return $this->render('pages/home.html.twig', [
