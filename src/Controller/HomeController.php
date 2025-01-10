@@ -78,6 +78,8 @@ class HomeController extends AbstractController
                 $existingBookRead->setUpdatedAt(new DateTime());
 
                 $response['toAdd'] = $existingBookRead->toArray();
+
+                $entityManager->flush();
             } else {
                 // Create new bookRead
                 $bookRead->setUser($user);
@@ -85,10 +87,15 @@ class HomeController extends AbstractController
                 $bookRead->setUpdatedAt(new DateTime());
 
                 $entityManager->persist($bookRead);
-                $response['toAdd'] = $bookRead->toArray();
-            }
+                $entityManager->flush();
 
-            $entityManager->flush();
+                $newBookRead = $this->bookReadRepository->findOneBy([
+                    'user' => $user,
+                    'book' => $bookRead->getBook(),
+                ]);
+
+                $response['toAdd'] = $newBookRead->toArray();
+            }
 
             return new JsonResponse($response);
         }

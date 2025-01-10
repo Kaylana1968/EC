@@ -115,9 +115,9 @@ document.getElementById('book-read-form').addEventListener('submit', function (e
 						</td>
 					`;
 
-					readBooksReadTable.appendChild(row);
+					readBookReadsTable.appendChild(row);
 				} else {
-					const unreadBooksReadTable = document.querySelector("#current-books-table tbody");
+					const unreadBookReadsTable = document.querySelector("#current-books-table tbody");
 
 					const updatedAt = new Date(toAdd.updated_at);
 					const formatedUpdatedAd = `${
@@ -147,7 +147,7 @@ document.getElementById('book-read-form').addEventListener('submit', function (e
 						</td>
 					`;
 
-					unreadBooksReadTable.appendChild(row);
+					unreadBookReadsTable.appendChild(row);
 				}
 			}
     })

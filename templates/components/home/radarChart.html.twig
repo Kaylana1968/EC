@@ -12,10 +12,10 @@
 <script>
 const categories = {{ categories|map(category => category.name)|json_encode|raw }};
 const allBookReads = [
-  {% for booksRead in readBookReads|merge(unreadBookReads) %}
+  {% for bookRead in readBookReads|merge(unreadBookReads) %}
     {
-      rating: {{ booksRead.rating|json_encode|raw }},
-      category: {{ booksRead.book.category.name|json_encode|raw }}
+      rating: {{ bookRead.rating|json_encode|raw }},
+      category: {{ bookRead.book.category.name|json_encode|raw }}
     }
     {% if not loop.last %},{% endif %}
   {% endfor %}
