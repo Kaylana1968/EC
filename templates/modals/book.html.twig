@@ -43,7 +43,66 @@
 	</div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.35.1"></script>
+
 <script>
+const categories = {{ categories|map(category => category.name)|json_encode|raw }};
+const allBookReads = [
+  {% for bookRead in readBookReads|merge(unreadBookReads) %}
+    {
+			id: {{ bookRead.id|json_encode|raw }},
+      rating: {{ bookRead.rating|json_encode|raw }},
+      category: {{ bookRead.book.category.name|json_encode|raw }}
+    }
+    {% if not loop.last %},{% endif %}
+  {% endfor %}
+];
+
+const data = categories.map(category => {
+  // Filter bookReads by category
+  const categoryBookReads = allBookReads.filter(bookRead => bookRead.category === category);
+
+  // Return the average of the bookReads rating
+  return categoryBookReads.reduce((accumulator, currentValue) => accumulator + parseFloat(currentValue.rating), 0) / (categoryBookReads.length || 1);
+})
+
+const options = {
+  chart: {
+    height: 400,
+    type: 'radar'
+  },
+  yaxis: {
+    min: 0,
+    max: 5,
+    tickAmount: 5, 
+  },
+  xaxis: {
+    categories
+  },
+  series: [{
+    name: "",
+    data
+  }]
+};
+
+const chart = new ApexCharts(document.getElementById("radarChart"), options);
+
+chart.render();
+
+function updateChart() {
+	const newData = categories.map(category => {
+		// Filter bookReads by category
+		const categoryBookReads = allBookReads.filter(bookRead => bookRead.category === category);
+
+		// Return the average of the bookReads rating
+		return categoryBookReads.reduce((accumulator, currentValue) => accumulator + parseFloat(currentValue.rating), 0) / (categoryBookReads.length || 1);
+	})
+
+	chart.updateSeries([{
+		data: newData
+	}])
+}
+
 document.getElementById('book-read-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -70,11 +129,17 @@ document.getElementById('book-read-form').addEventListener('submit', function (e
       messageDiv.textContent = message;
 
 			if (toDelete) {
+				// Delete element from DOM
 				const toDeleteElement = document.getElementById(`bookread-${toDelete.id}`);
 				toDeleteElement.parentElement.remove();
+
+				// Delete element from allBookReads to update chart
+				const toDeleteIndex = allBookReads.findIndex(bookRead => bookRead.id === toDelete.id);
+				allBookReads.splice(toDeleteIndex, 1);
 			}
 
 			if (toAdd) {
+				// Create a row to add to DOM
 				const row = document.createElement("tr");
 
 				if (toAdd.is_read) {
@@ -149,6 +214,15 @@ document.getElementById('book-read-form').addEventListener('submit', function (e
 
 					unreadBookReadsTable.appendChild(row);
 				}
+
+				// Update chart with new values
+				allBookReads.push({
+					id: toAdd.id,
+					rating: toAdd.rating,
+					category: toAdd.book.category.name
+				});
+
+				updateChart();
 			}
     })
     .catch(error => {

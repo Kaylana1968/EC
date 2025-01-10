@@ -19,7 +19,7 @@ class BookReadRepository extends ServiceEntityRepository
 
     /**
      * Method to find all ReadBook entities by user_id
-     * @param int $userId
+     * @param User $user
      * @param bool $readState
      * @return array
      */

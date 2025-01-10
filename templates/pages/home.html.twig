@@ -55,28 +55,31 @@
 		<!-- end: grid -->
 	</div>
 
-    <script>
-    function setFormFields(bookReadData) {
-        const bookField = document.getElementById("book_read_book");
-        // compare the text in the option which is the book of the name and the name of the book of the row clicked
-        const selectedOption = Object.values(bookField.options).find(option => option.textContent === bookReadData.book.name);
-        bookField.value = selectedOption.value;
+	<script>
+	function setFormFields(bookReadData) {
+		document.getElementById('form-messages').textContent = "";
 
-        const descriptionField = document.getElementById("book_read_description");
-        descriptionField.value = bookReadData.description
+		const bookField = document.getElementById("book_read_book");
+		// compare the text in the option which is the book of the name and the name of the book of the row clicked
+		const selectedOption = Object.values(bookField.options).find(option => option.textContent === bookReadData.book.name);
+		bookField.value = selectedOption.value;
 
-        const ratingField = document.getElementById("book_read_rating");
-        ratingField.value = bookReadData.rating
+		const descriptionField = document.getElementById("book_read_description");
+		descriptionField.value = bookReadData.description
 
-        const is_readField = document.getElementById("book_read_is_read");
-        is_readField.checked = bookReadData.is_read
-    }
+		const ratingField = document.getElementById("book_read_rating");
+		ratingField.value = bookReadData.rating
 
-    function resetFormFields() {
-        document.getElementById("book_read_book").value = 0;
-        document.getElementById("book_read_description").value = "";
-        document.getElementById("book_read_rating").value = "1.00";
-        document.getElementById("book_read_is_read").checked = false;
-    }
-    </script>
+		const is_readField = document.getElementById("book_read_is_read");
+		is_readField.checked = bookReadData.is_read
+	}
+
+	function resetFormFields() {
+		document.getElementById('form-messages').textContent = "";
+		document.getElementById("book_read_book").value = 0;
+		document.getElementById("book_read_description").value = "";
+		document.getElementById("book_read_rating").value = "1.00";
+		document.getElementById("book_read_is_read").checked = false;
+	}
+	</script>
 {% endblock %}
