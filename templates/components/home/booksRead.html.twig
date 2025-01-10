@@ -52,17 +52,10 @@
 								<td>
 									<div class="rating">
 										{% for rating in [1, 2, 3, 4, 5] %}
-											{% if (rating <= bookRead.rating) %}
-												<div class="rating-label checked">
+												<div class="rating-label {% if rating <= bookRead.rating %}checked{% endif %}">
 													<i class="rating-on ki-solid ki-star text-base leading-none"></i>
 													<i class="rating-off ki-outline ki-star text-base leading-none"></i>
 												</div>
-											{% else %}
-												<div class="rating-label">
-													<i class="rating-on ki-solid ki-star text-base leading-none"></i>
-													<i class="rating-off ki-outline ki-star text-base leading-none"></i>
-												</div>
-											{% endif %}
 										{% endfor %}
 									</div>
 								</td>
