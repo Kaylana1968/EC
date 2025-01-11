@@ -1,0 +1,48 @@
+<div class="modal" data-modal="true" id="comment_modal">
+	<div class="modal-content">
+		<div class="modal-header py-4 px-5">
+			<h3 class="modal-title">Commentaires</h3>
+		</div>
+		<div class="modal-body p-0 pb-5">
+			<div id="comment-table" class="scrollable-y-auto" data-scrollable="true" data-scrollable-max-height="auto" data-scrollable-offset="300px">
+				<div data-datatable="true" data-datatable-page-size="5">
+					<div class="scrollable-x-auto">
+						<table class="table table-border" data-datatable-table="true">
+							<thead>
+								<tr>
+									<th>
+										<span class="sort asc">
+											<span class="sort-label">Utilisateur</span>
+											<span class="sort-icon"></span>
+										</span>
+									</th>
+									<th class="min-w-[280px]">
+										<span class="sort asc">
+											<span class="sort-label">Commentaire</span>
+											<span class="sort-icon"></span>
+										</span>
+									</th>
+									<th class="min-w-[180px]">
+										<span class="sort asc">
+											<span class="sort-label">Envoyé le</span>
+											<span class="sort-icon"></span>
+										</span>
+									</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</tbody>
+					</table>
+				</div>
+				{{ form_start(form) }}
+				{{form_widget(form.content)}}
+				{# {{form_widget(form.bookRead, { 'attr': { 'value': bookRead } })}} #}
+				<button type="submit">
+					<i class="ki-outline ki-message-add text-2xl"></i>
+				</button>
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+</div>

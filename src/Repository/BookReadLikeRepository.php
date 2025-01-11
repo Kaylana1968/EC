@@ -16,20 +16,17 @@ class BookReadLikeRepository extends ServiceEntityRepository
         parent::__construct($registry, BookReadLike::class);
     }
 
-//    /**
-//     * @return BookReadLike[] Returns an array of BookReadLike objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('b.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return BookReadLike[] Returns an array of BookReadLike objects
+    */
+   public function findAll(): array
+   {
+       return $this->createQueryBuilder('b')
+           ->orderBy('b.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
 //    public function findOneBySomeField($value): ?BookReadLike
 //    {

@@ -13,16 +13,28 @@ class BookReadLike
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'bookReadLikes')]
+    #[ORM\ManyToOne(targetEntity: BookRead::class, inversedBy: 'bookReadLikes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?BookRead $book_read = null;
 
-    #[ORM\ManyToOne(inversedBy: 'bookReadLikes')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bookReadLikes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     #[ORM\Column]
     private ?bool $is_liked = null;
+
+    public function toArray(): array
+    {
+        $data = [
+            'id' => $this->getId(),
+            'bookRead' => $this->getBookRead()->toArray(),
+            'user' => $this->getUser()->toArray(),
+            'is_liked' => $this->getIsLiked()
+        ];
+
+        return $data;
+    }
 
     public function getId(): ?int
     {

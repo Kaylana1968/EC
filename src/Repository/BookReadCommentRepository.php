@@ -16,20 +16,17 @@ class BookReadCommentRepository extends ServiceEntityRepository
         parent::__construct($registry, BookReadComment::class);
     }
 
-    //    /**
-    //     * @return BookReadComment[] Returns an array of BookReadComment objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('b.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+       /**
+        * @return BookReadComment[] Returns an array of BookReadComment objects
+        */
+       public function findAll(): array
+       {
+           return $this->createQueryBuilder('b')
+               ->orderBy('b.created_at', 'ASC')
+               ->getQuery()
+               ->getResult()
+           ;
+       }
 
     //    public function findOneBySomeField($value): ?BookReadComment
     //    {

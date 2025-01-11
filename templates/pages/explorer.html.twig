@@ -1,106 +1,187 @@
-{% extends 'modalless-base.html.twig' %}
+{% extends 'explorer-base.html.twig' %}
 
 {% block title %}
 	Child Page Title Explorer
 {% endblock %}
 
 {% block body %}
-<div class="card card-grid h-full min-w-full">
-	<div class="card-header">
-		<h3 class="card-title">
-			Explorez les lectures
-		</h3>
-		<div class="input input-sm max-w-48">
-			<i class="ki-filled ki-magnifier"></i>
-			<input data-datatable-search="#read-books-table" placeholder="Rechercher" type="text"/>
+	<div class="card card-grid h-full min-w-full">
+		<div class="card-header">
+			<h3 class="card-title">
+				Explorez les lectures
+			</h3>
+			<div class="input input-sm max-w-48">
+				<i class="ki-filled ki-magnifier"></i>
+				<input data-datatable-search="#explorer-table" placeholder="Rechercher" type="text"/>
+			</div>
 		</div>
-	</div>
-	<div class="card-body">
-		<div id="read-books-table" data-datatable="true" data-datatable-page-size="5">
-			<div class="scrollable-x-auto">
-				<table class="table table-border" data-datatable-table="true">
-					<thead>
-						<tr>
-							<th>
-								<span class="sort asc">
-									<span class="sort-label">Utilisateur</span>
-									<span class="sort-icon"></span>
-								</span>
-							</th>
-							<th class="min-w-[280px]">
-								<span class="sort asc">
-									<span class="sort-label">Livre</span>
-									<span class="sort-icon"></span>
-								</span>
-							</th>
-							<th>
-								<span class="sort asc">
-									<span class="sort-label">Note</span>
-									<span class="sort-icon"></span>
-								</span>
-							</th>
-							<th class="min-w-[280px]">
-								<span class="sort asc">
-									<span class="sort-label">Commentaire</span>
-									<span class="sort-icon"></span>
-								</span>
-							</th>
-							<th class="min-w-[180px]">
-								<span class="sort asc">
-									<span class="sort-label">Modifié le</span>
-									<span class="sort-icon"></span>
-								</span>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for bookRead in bookReads %}
+		<div class="card-body">
+			<div id="explorer-table" data-datatable="true" data-datatable-page-size="5">
+				<div class="scrollable-x-auto">
+					<table class="table table-border" data-datatable-table="true">
+						<thead>
 							<tr>
-								<td>
-									{{ bookRead.user.email }}
-								</td>
-								<td>
-									<div class="flex flex-col gap-2">
-										<span class="leading-none font-medium text-start text-sm text-gray-900">
-											{{bookRead.book.name}}
-										</span>
-										<span class="text-2sm text-gray-700 font-normal leading-3">
-											{{bookRead.book.description}}
-										</span>
-									</div>
-								</td>
-								<td>
-									<div class="rating">
-										{% for rating in [1, 2, 3, 4, 5] %}
-											<div class="rating-label {% if rating <= bookRead.rating %}checked{% endif %}">
-												<i class="rating-on ki-solid ki-star text-base leading-none"></i>
-												<i class="rating-off ki-outline ki-star text-base leading-none"></i>
-											</div>
-										{% endfor %}
-									</div>
-								</td>
-								<td>{{bookRead.description}}</td>
-								<td class="text-end">
-									{{ bookRead.updatedAt|date('d/m/Y à H:i') }}
-								</td>
+								<th>
+									<span class="sort asc">
+										<span class="sort-label">Utilisateur</span>
+										<span class="sort-icon"></span>
+									</span>
+								</th>
+								<th class="min-w-[280px]">
+									<span class="sort asc">
+										<span class="sort-label">Livre</span>
+										<span class="sort-icon"></span>
+									</span>
+								</th>
+								<th>
+									<span class="sort asc">
+										<span class="sort-label">Note</span>
+										<span class="sort-icon"></span>
+									</span>
+								</th>
+								<th class="min-w-[280px]">
+									<span class="sort asc">
+										<span class="sort-label">Commentaire</span>
+										<span class="sort-icon"></span>
+									</span>
+								</th>
+								<th class="min-w-[180px]">
+									<span class="sort asc">
+										<span class="sort-label">Modifié le</span>
+										<span class="sort-icon"></span>
+									</span>
+								</th>
+								<th></th>
 							</tr>
-						{% endfor %}
+						</thead>
+						<tbody>
+							{% for bookRead in bookReads %}
+								<tr>
+									<td>
+										{{ bookRead.user.email }}
+									</td>
+									<td>
+										<div class="flex flex-col gap-2">
+											<span class="leading-none font-medium text-start text-sm text-gray-900">
+												{{bookRead.book.name}}
+											</span>
+											<span class="text-2sm text-gray-700 font-normal leading-3">
+												{{bookRead.book.description}}
+											</span>
+										</div>
+									</td>
+									<td>
+										<div class="rating">
+											{% for rating in [1, 2, 3, 4, 5] %}
+												<div class="rating-label {% if rating <= bookRead.rating %}checked{% endif %}">
+													<i class="rating-on ki-solid ki-star text-base leading-none"></i>
+													<i class="rating-off ki-outline ki-star text-base leading-none"></i>
+												</div>
+											{% endfor %}
+										</div>
+									</td>
+									<td>{{bookRead.description}}</td>
+									<td class="text-end">
+										{{ bookRead.updatedAt|date('d/m/Y à H:i') }}
+									</td>
+									<td>
+										<div class="flex gap-2">
+											<button>
+												<i class="ki-outline ki-heart text-2xl"></i>
+											</button>
+											<button id="comment-modal-button-{{ bookRead.id }}" data-modal-toggle="#comment_modal" onclick="setCommentTableValues({{bookRead.toArray()|json_encode}})">
+												<i class="ki-outline ki-messages text-2xl"></i>
+											</button>
+										</div>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
 					</tbody>
-				</tbody>
-			</table>
-		</div>
-		<div class="card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium">
-			<div class="flex items-center gap-2 order-2 md:order-1">
-				Show
-				<select class="select select-sm w-16" data-datatable-size="true" name="perpage"></select>
-				per page
+				</table>
 			</div>
-			<div class="flex items-center gap-4 order-1 md:order-2">
-				<span data-datatable-info="true"></span>
-				<div class="pagination" data-datatable-pagination="true"></div>
+			<div class="card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium">
+				<div class="flex items-center gap-2 order-2 md:order-1">
+					Show
+					<select class="select select-sm w-16" data-datatable-size="true" name="perpage"></select>
+					per page
+				</div>
+				<div class="flex items-center gap-4 order-1 md:order-2">
+					<span data-datatable-info="true"></span>
+					<div class="pagination" data-datatable-pagination="true"></div>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+
+<script>
+// Get all comments
+const comments = [
+	{% for comment in comments %}
+		{
+			bookRead: {{ comment.bookRead.toArray()|json_encode|raw }},
+			user: {{ comment.user.toArray()|json_encode|raw }},
+			content: {{ comment.content|json_encode|raw }},
+			created_at: {{ comment.createdAt|date('d/m/Y H:i:s')|json_encode|raw }},
+		}
+		{% if not loop.last %},{% endif %}
+	{% endfor %}
+];
+
+// Get all likes
+const likes = [
+	{% for like in likes %}
+		{
+			bookRead: {{ like.bookRead.toArray()|json_encode|raw }},
+			user: {{ like.user.toArray()|json_encode|raw }},
+			is_liked: {{ like.isLiked|json_encode|raw }},
+		}
+		{% if not loop.last %},{% endif %}
+	{% endfor %}
+];
+
+// HTML when table is empty
+const tableEmptyHTML = '<td colspan="4">No records found</td>';
+
+function setCommentTableValues(bookRead) {
+// Filter comments to get only those to current bookRead
+	const relatedComments = comments.filter(comment => comment.bookRead.id === bookRead.id);
+
+	const tableBody = document.querySelector("#comment-table tbody");
+	tableBody.innerHTML = "";
+
+	// Create a row for each element
+	relatedComments.forEach(comment => {
+		const row = document.createElement("tr");
+
+		const createdAt = new Date(comment.created_at);
+		const formatedCreatedAt = `${
+			String(createdAt.getDate()).padStart(2, '0')
+		}/${
+			String(createdAt.getMonth() + 1).padStart(2, '0')
+		}/${
+			createdAt.getFullYear()
+		} à ${
+			String(createdAt.getHours()).padStart(2, '0')
+		}:${
+			String(createdAt.getMinutes()).padStart(2, '0')
+		}`;
+
+		row.innerHTML = `
+			<td>
+				${comment.user.email}
+			</td>
+			<td>${comment.content}</td>
+			<td class="text-end">
+				${formatedCreatedAt}
+			</td>
+		`;
+
+		tableBody.appendChild(row);
+	})
+
+	tableBody.innerHTML = tableBody.innerHTML || tableEmptyHTML
+}
+</script>
 
 {% endblock %}

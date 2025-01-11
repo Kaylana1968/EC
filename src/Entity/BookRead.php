@@ -58,7 +58,6 @@ class BookRead
     #[ORM\OneToMany(targetEntity: BookReadComment::class, mappedBy: 'book_read')]
     private Collection $bookReadComments;
 
-
     public function __construct()
     {
         $this->created_at = new \DateTime();
@@ -78,7 +77,7 @@ class BookRead
             'created_at' => $this->getCreatedAt()?->format('Y-m-d H:i:s'),
             'updated_at' => $this->getUpdatedAt()?->format('Y-m-d H:i:s'),
             'book' => $this->getBook()->toArray(),
-            'user' => $this->getUser()->toArray(),
+            'user' => $this->getUser()->toArray()
         ];
 
         return $data;

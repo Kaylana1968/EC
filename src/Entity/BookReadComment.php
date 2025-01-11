@@ -13,16 +13,37 @@ class BookReadComment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'bookReadComments')]
+    #[ORM\ManyToOne(targetEntity: BookRead::class, inversedBy: 'bookReadComments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?BookRead $book_read = null;
 
-    #[ORM\ManyToOne(inversedBy: 'bookReadComments')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bookReadComments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $user = null;
+    private ?User $user = null;
 
     #[ORM\Column(length: 2047)]
     private ?string $content = null;
+
+    #[ORM\Column]
+    private ?\DateTime $created_at = null;
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTime();
+    }
+
+    public function toArray(): array
+    {
+        $data = [
+            'id' => $this->getId(),
+            'bookRead' => $this->getBookRead()->toArray(),
+            'user' => $this->getUser()->toArray(),
+            'content' => $this->getContent(),
+            'created_at' => $this->getCreatedAt()?->format('Y-m-d H:i:s'),
+        ];
+
+        return $data;
+    }
 
     public function getId(): ?int
     {
@@ -41,12 +62,12 @@ class BookReadComment
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
@@ -61,6 +82,18 @@ class BookReadComment
     public function setContent(string $content): static
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTime
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTime $created_at): static
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }

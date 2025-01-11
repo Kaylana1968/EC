@@ -195,7 +195,7 @@ document.getElementById('book-read-form').addEventListener('submit', function (e
 					const unreadBookReadsTable = document.querySelector("#current-books-table tbody");
 
 					const updatedAt = new Date(toAdd.updated_at);
-					const formatedUpdatedAd = `${
+					const formatedUpdatedAt = `${
 						String(updatedAt.getDate()).padStart(2, '0')
 					}/${
 						String(updatedAt.getMonth() + 1).padStart(2, '0')
@@ -205,7 +205,8 @@ document.getElementById('book-read-form').addEventListener('submit', function (e
 						String(updatedAt.getHours()).padStart(2, '0')
 					}:${
 						String(updatedAt.getMinutes()).padStart(2, '0')
-					}`
+					}`;
+
 					row.innerHTML = `
 						<td id="bookread-${toAdd.id}">
 							<div class="flex flex-col gap-2">
@@ -218,7 +219,7 @@ document.getElementById('book-read-form').addEventListener('submit', function (e
 							</div>
 						</td>
 						<td class="text-end">
-							${formatedUpdatedAd}
+							${formatedUpdatedAt}
 						</td>
 					`;
 
