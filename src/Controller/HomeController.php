@@ -101,6 +101,7 @@ class HomeController extends AbstractController
         }
 
         return $this->render('pages/home.html.twig', [
+            'name' => 'Accueil',
             'form' => $form,
             'bookReads' => $bookReads,
             'unreadBookReads' => $unreadBookReads,

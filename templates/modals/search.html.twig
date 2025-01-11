@@ -39,6 +39,7 @@ const books = [
   {% endfor %}
 ];
 
+// Add rating to each book
 books.forEach((book, index) => {
   const filteredBookReads = bookReads.filter(bookRead => bookRead.book.id === book.id);
   const rating = filteredBookReads.reduce(

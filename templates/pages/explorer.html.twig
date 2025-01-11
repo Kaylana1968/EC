@@ -87,7 +87,7 @@
 									<td>
 										<div class="flex gap-2">
 											<button onclick="addLike({{ bookRead.id|json_encode }})">
-												<i class="ki-outline ki-heart text-2xl"></i>
+												<i id="heart-{{ bookRead.id }}" class="{% if likes is iterable and likes|filter(like => like.bookRead == bookRead and like.user == app.user and like.isLiked)|length > 0 %}ki-solid {% else %}ki-outline{% endif %} ki-heart text-2xl"></i>
 											</button>
 											<button id="comment-modal-button-{{ bookRead.id }}" data-modal-toggle="#comment_modal" onclick="setCommentTableValues({{ bookRead.toArray()|json_encode }})">
 												<i class="ki-outline ki-messages text-2xl"></i>
@@ -197,7 +197,7 @@ function addLike(bookReadId) {
 	})
 	.then(response => {
 		if (response.ok) {
-			const heart = document.querySelector(".ki-heart");
+			const heart = document.getElementById(`heart-${bookReadId}`);
 			if (heart.className.includes('ki-outline')) {
 				heart.classList.add('ki-solid')
 				heart.classList.remove('ki-outline')

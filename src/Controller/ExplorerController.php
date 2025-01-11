@@ -68,6 +68,7 @@ class ExplorerController extends AbstractController
         }
 
         return $this->render('pages/explorer.html.twig', [
+            'name' => 'Explorer',
             'books' => $books,
             'bookReads' => $bookReads,
             'comments' => $comments,
