@@ -170,22 +170,13 @@ document.getElementById('book-read-form').addEventListener('submit', function (e
 						<td>
 							<div class="rating">
 								${[1, 2, 3, 4, 5]
-									.map(rating => {
-										return rating <= toAdd.rating
-										? `
-											<div class="rating-label checked">
-												<i class="rating-on ki-solid ki-star text-base leading-none"></i>
-												<i class="rating-off ki-outline ki-star text-base leading-none"></i>
-											</div>
-										`
-										: `
-											<div class="rating-label">
-												<i class="rating-on ki-solid ki-star text-base leading-none"></i>
-												<i class="rating-off ki-outline ki-star text-base leading-none"></i>
-											</div>
-										`;
-									})
-									.join('')}
+								.map(rating => `
+									<div class="rating-label ${rating <= toAdd.rating ? "checked" : ""}">
+										<i class="rating-on ki-solid ki-star text-base leading-none"></i>
+										<i class="rating-off ki-outline ki-star text-base leading-none"></i>
+									</div>
+								`)
+								.join('')}
 							</div>
 						</td>
 					`;

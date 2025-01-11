@@ -8,6 +8,7 @@ use App\Form\BookReadCommentType;
 use App\Repository\BookReadCommentRepository;
 use App\Repository\BookReadLikeRepository;
 use App\Repository\BookReadRepository;
+use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Error;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,16 +19,19 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ExplorerController extends AbstractController
 {
+    private BookRepository $bookRepository;
     private BookReadRepository $bookReadRepository;
     private BookReadCommentRepository $bookReadCommentRepository;
     private BookReadLikeRepository $bookReadLikeRepository;
 
     // Inject the repository via the constructor
     public function __construct(
+        BookRepository $bookRepository,
         BookReadRepository $bookReadRepository,
         BookReadCommentRepository $bookReadCommentRepository,
         BookReadLikeRepository $bookReadLikeRepository
     ) {
+        $this->bookRepository = $bookRepository;
         $this->bookReadRepository = $bookReadRepository;
         $this->bookReadCommentRepository = $bookReadCommentRepository;
         $this->bookReadLikeRepository = $bookReadLikeRepository;
@@ -36,6 +40,7 @@ class ExplorerController extends AbstractController
     #[Route('/explorer', name: 'app.explorer')]
     public function explorer(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $books = $this->bookRepository->findAll();
         $bookReads = $this->bookReadRepository->findAll();
         $comments = $this->bookReadCommentRepository->findAll();
         $likes = $this->bookReadLikeRepository->findAll();
@@ -63,6 +68,7 @@ class ExplorerController extends AbstractController
         }
 
         return $this->render('pages/explorer.html.twig', [
+            'books' => $books,
             'bookReads' => $bookReads,
             'comments' => $comments,
             'likes' => $likes,
