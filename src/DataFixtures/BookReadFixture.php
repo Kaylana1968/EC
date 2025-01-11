@@ -3,11 +3,22 @@
 namespace App\DataFixtures;
 
 use App\Entity\BookRead;
+use App\Repository\BookRepository;
+use App\Repository\UserRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 class BookReadFixture extends Fixture
 {
+    private UserRepository $userRepository;
+    private BookRepository $bookRepository;
+
+    public function __construct(UserRepository $userRepository, BookRepository $bookRepository)
+    {
+        $this->userRepository = $userRepository;
+        $this->bookRepository = $bookRepository;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $now    = new \DateTime();
@@ -86,11 +97,13 @@ class BookReadFixture extends Fixture
 
         // Iterate over the data and create entities
         foreach ($data as $item) {
+            $user = $this->userRepository->findOneById($item['user_id']);
+            $book = $this->bookRepository->findOneById($item['book_id']);
             $bookRead = new BookRead();
-            $bookRead->setUserId($item['user_id']);
-            $bookRead->setBookId($item['book_id']);
+            $bookRead->setUser($user);
+            $bookRead->setBook($book);
             $bookRead->setRating($item['rating']);
-            $bookRead->setRead($item['is_read']);
+            $bookRead->setIsRead($item['is_read']);
             $bookRead->setDescription($item['description']);
             $bookRead->setCreatedAt($now);
             $bookRead->setUpdatedAt($now);

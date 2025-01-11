@@ -3,11 +3,19 @@
 namespace App\DataFixtures;
 
 use App\Entity\Book;
+use App\Repository\CategoryRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 class BookFixture extends Fixture
 {
+    private CategoryRepository $categoryRepository;
+
+    public function __construct(CategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
     public function load(ObjectManager $manager): void
     {
 
@@ -157,8 +165,9 @@ class BookFixture extends Fixture
 
         // Iterate over the data and create entities
         foreach ($data as $item) {
+            $category = $this->categoryRepository->findOneById($item['category_id']);
             $book = new Book();
-            $book->setCategoryId($item['category_id']);
+            $book->setCategory($category);
             $book->setName($item['name']);
             $book->setDescription($item['description']);
             $book->setPages($item['pages']);

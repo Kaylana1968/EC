@@ -28,13 +28,13 @@ class BookRepository extends ServiceEntityRepository
         ;
     }
 
-    //    public function findOneBySomeField($value): ?Book
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findOneById($value): ?Book
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.id = :id')
+            ->setParameter('id', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
