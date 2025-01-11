@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\BookReadComment;
+use App\Entity\BookReadLike;
 use App\Form\BookReadCommentType;
 use App\Repository\BookReadCommentRepository;
 use App\Repository\BookReadLikeRepository;
@@ -67,5 +68,43 @@ class ExplorerController extends AbstractController
             'likes' => $likes,
             'form' => $form
         ]);
+    }
+
+    #[Route('/add-like', name: 'api.add.like')]
+    public function addLike(Request $request, EntityManagerInterface $entityManager)
+    {
+        $parameters = json_decode($request->getContent(), true);
+        $bookReadId = $parameters['bookReadId'];
+
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw new Error("Connectez-vous avant de mettre un like");
+        }
+
+        $bookRead = $this->bookReadRepository->findOneBy([
+            'id' => $bookReadId
+        ]);
+
+        $like = $this->bookReadLikeRepository->findOneBy([
+            'user' => $user,
+            'book_read' => $bookRead,
+        ]);
+
+        if ($like) {
+            $like->setIsLiked(!$like->getIsLiked());
+        } else {
+            $like = new BookReadLike();
+
+            $like->setUser($user);
+            $like->setBookRead($bookRead);
+            $like->setIsLiked(true);
+
+            $entityManager->persist($like);
+        }
+
+        $entityManager->flush();
+
+        return new JsonResponse(['message' => "Le like a bien été ajouté"]);
     }
 }
