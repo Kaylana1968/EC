@@ -10,6 +10,7 @@ use App\Repository\BookReadRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Error;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -50,6 +51,14 @@ class ExplorerController extends AbstractController
             }
 
             $comment->setUser($user);
+
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return new JsonResponse([
+                'message' => "Le commentaire a bien été ajouté",
+                'toAdd' => $comment->toArray()
+            ]);
         }
 
         return $this->render('pages/explorer.html.twig', [

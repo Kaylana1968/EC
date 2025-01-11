@@ -180,7 +180,11 @@ function setCommentTableValues(bookRead) {
 		tableBody.appendChild(row);
 	})
 
+	// If tableBody's HTML is empty, set its HTML to what's supposed to be when empty
 	tableBody.innerHTML = tableBody.innerHTML || tableEmptyHTML
+
+	// Set bookRead value in the add comment form
+	document.getElementById("book_read_comment_book_read").value = bookRead.id
 }
 </script>
 
